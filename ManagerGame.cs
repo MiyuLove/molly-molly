@@ -10,10 +10,13 @@ public class ManagerGame : MonoBehaviour
     
     public int gameScore = 0;
     public int[] CountClick = new int[4];
-    Vector2[] HoleLo = {new Vector2(-5f,-2.5f), new Vector2(0f, -2.5f),
-                        new Vector2(-2.5f,-2.5f),new Vector2(2.5f,-2.5f),new Vector2(5f,-2.5f),
-                        new Vector2(-5f,0f),new Vector2(-2.5f,0f),
-                        new Vector2(0f,0f),new Vector2(2.5f,0f),new Vector2(5f,0f)};
+    Vector2[] HoleLo = {
+        new Vector2(-5f,-2.5f), new Vector2(0f, -2.5f),new Vector2(-2.5f,-2.5f),
+        new Vector2(2.5f,-2.5f),new Vector2(5f,-2.5f),new Vector2(-5f,0f),
+        new Vector2(-2.5f,0f), new Vector2(0f,0f),new Vector2(2.5f,0f),
+        new Vector2(5f,0f)
+    };
+
     void Start()
     {
         ScoreText.text = string.Format("SCORE : 0");
@@ -41,14 +44,14 @@ public class ManagerGame : MonoBehaviour
 
     void GameStart()
     {
-        FirstScene.singleton.gm = true;
+        ManagerApp.singleton.gamePlaying = true;
         for (int i = 0; i < 10; i ++)
             Instantiate(prefabGame, HoleLo[i], Quaternion.identity);
     }
 
     public void AddScore(int m)
     {
-        if (!FirstScene.singleton.gm) return;
+        if (!ManagerApp.singleton.gamePlaying) return;
         if (m == 0) gameScore += 100;
         else if (m == 1) gameScore += 300;
         else gameScore += 500;
@@ -56,8 +59,7 @@ public class ManagerGame : MonoBehaviour
     }
     public void MinusScore()
     {
-
-        if (!FirstScene.singleton.gm) return;
+        if (!ManagerApp.singleton.gamePlaying) return;
         CountClick[3]++;
         gameScore -= 1000;
         if (gameScore < 0)
@@ -70,16 +72,16 @@ public class ManagerGame : MonoBehaviour
     }
     public void TimeOver()
     {
-        if (FirstScene.singleton.BestScore < gameScore)
+        if (ManagerApp.singleton.bestScore < gameScore)
         {
-            FirstScene.singleton.BestScore = gameScore;
+            ManagerApp.singleton.bestScore = gameScore;
             for(int i = 0; i < 4; i++)
             {
-                FirstScene.singleton.hole[i] = CountClick[i];
+                ManagerApp.singleton.hole[i] = CountClick[i];
             }
-            FirstScene.singleton.SaveMolly();
+            ManagerApp.singleton.SaveMolly();
         }
-        FirstScene.singleton.PlayingCount++;
+        ManagerApp.singleton.playCount++;
         Instantiate(prefabMenu, Vector2.zero, Quaternion.identity);
     }
 }

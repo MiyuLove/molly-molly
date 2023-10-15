@@ -21,7 +21,7 @@ public class Hole : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!FirstScene.singleton.gm) return;
+        if (!ManagerApp.singleton.gamePlaying) return;
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("A_Open") ||
             animator.GetCurrentAnimatorStateInfo(0).IsName("A_Idle"))
         {
@@ -65,7 +65,7 @@ public class Hole : MonoBehaviour
 
     void FinishAni()
     {
-        if (FirstScene.singleton.gm) {
+        if (ManagerApp.singleton.gamePlaying) {
             Instantiate(Molly4, this.transform.position, Quaternion.identity);
             Destroy(gameObject);
          }
